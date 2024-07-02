@@ -10,6 +10,10 @@ function standby()
   -- wait until armed with healthy ahrs
   if ahrs:initialised() then
       gcs:send_text(6, "Drowings® Enhanced Safety - Starting -")
+      -- signal the operator the batteries are not fully charged when powering the aircraft
+      if battery:healthy(0) and battery:voltage(0) < 49.1 then
+          gcs:send_text(4, "Batteries not fully charged! Recharge them before taking off!")
+      end
       return update, 250
   end
   return standby, 1000
