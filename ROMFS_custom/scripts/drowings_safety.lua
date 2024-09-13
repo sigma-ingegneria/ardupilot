@@ -11,7 +11,7 @@ function standby()
   if ahrs:initialised() then
       gcs:send_text(6, "Drowings® Enhanced Safety - Starting -")
       -- signal the operator the batteries are not fully charged when powering the aircraft
-      if battery:healthy(0) and battery:voltage(0) < 49.1 then
+      if battery:healthy(0) and battery:voltage(0) < 48.8 then
           gcs:send_text(4, "Batteries not fully charged! Recharge them before taking off!")
       end
       return update, 250
@@ -23,11 +23,14 @@ function update()
   if rc:has_valid_input() then --verifico di non essere in failsafe
     pwm1 = rc:get_pwm(1) -- control stick
     pwm2 = rc:get_pwm(2) -- control stick
+    pwm3 = rc:get_pwm(3) -- control stick
+    pwm4 = rc:get_pwm(4) -- control stick
+
     emergency_button_state = scripting_rc_chan:get_aux_switch_pos()
     current_mode = vehicle:get_mode()
 
     -- controllo che i canali non siano zero, succede appena il drone si accende.
-    if (pwm1 ~= 0) and (pwm2 ~= 0) then
+    if (pwm1 ~= 0) and (pwm2 ~= 0) and (pwm3 ~= 0) and (pwm4 ~= 0) then
       
       -- gestione bottone di emergenza
       if previous_emergency_button_state ~= emergency_button_state then
@@ -62,7 +65,7 @@ function update()
       
       -- Se sono in BRAKE e muovo gli stick torno in Loiter
       if current_mode == brake_mode_id then 
-        if (pwm1 > 1580) or (pwm1 < 1420) or (pwm2 > 1580) or (pwm2 < 1420) then --80uS deadband
+        if (pwm1 > 1580) or (pwm1 < 1420) or (pwm2 > 1580) or (pwm2 < 1420) or (pwm3 > 1580) or (pwm3 < 1420) or (pwm4 > 1580) or (pwm4 < 1420)then --80uS deadband
           vehicle:set_mode(loiter_mode_id)
           gcs:send_text(6, "Switching to Loiter, roll or pitch stick has been moved")
         end
