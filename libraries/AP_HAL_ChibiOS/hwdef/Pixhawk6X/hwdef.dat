@@ -393,4 +393,4 @@ define HAL_WITH_IO_MCU_BIDIR_DSHOT 1
 define AP_OPENDRONEID_ENABLED 1
 
 #add custom firmware string
-define AP_CUSTOM_FIRMWARE_STRING "AP-Drowings 4.5.4"
+define AP_CUSTOM_FIRMWARE_STRING "AP-Drowings 4.5.7"
